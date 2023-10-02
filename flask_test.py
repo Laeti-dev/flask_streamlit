@@ -13,17 +13,14 @@ df.drop(columns="Unnamed: 32", inplace=True)
 
 @app.route("/<name>")
 def accueil(name):
-    url_for('static', filename='styles.css')
-
-    return (f"<h1> Hello {escape(name)}!</h1>"
-            "<p>Let's check some datas!</p>")
+    return render_template('index.html', name=name)
 
 @app.route("/data")
-def showData():
+def show_data():
     return df.to_html()
 
 @app.route("/rawdata")
-def showRawData() :
+def show_raw_data() :
     return df.to_json(orient='records')
 
 @app.route("/describe")
