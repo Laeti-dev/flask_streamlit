@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../static/styles.css">
   </head>
   <body>
-    <h1>Hello {{ name }}</h1>
+    <h1>Hello</h1>
     <div>
       <p>Go to:</p>
       <ul>
@@ -21,8 +21,14 @@
     </div>
     <div>
       <p>Or look for a data</p>
-      <form>
-        <input type="number"/>
+      <form method="POST" action="{{ url_for('find') }}">
+        <select name="id_select">
+            <option value=" "> </option>
+          {%for id in id_list%}
+            <option value={{ id }}>{{ id }}</option>
+          {%endfor%}
+        </select>
+        <button type="submit">Find</button>
       </form>
     </div>
   </body>
