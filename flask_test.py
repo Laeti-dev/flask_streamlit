@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import json
+import joblib
 
 app = Flask(__name__)
 
@@ -12,7 +13,7 @@ df = pd.read_csv('data.csv')
 df.drop(columns="Unnamed: 32", inplace=True)
 data_json = df.to_json(orient='records')
 data_json = json.loads(data_json)
-id_list= [el["id"] for el in data_json]
+id_list= list(df["id"])
 
 
 @app.route("/")
@@ -38,5 +39,9 @@ def corr_matrix():
 @app.route("/find", methods=['GET','POST'])
 def find():
     id = request.form.get("id_select")
-    id_index = id_list.index(id)
-    return f"{id_index}"
+    return redirect(f"/find/{id}")
+
+@app.route("/find/<id>")
+def find_id(id):
+    # res = next((item for item in data_json if item['id'] == id), None)
+    return df[df['id'] == int(id)].to_json(orient='records')
