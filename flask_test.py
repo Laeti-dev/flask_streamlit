@@ -36,12 +36,21 @@ def describe_data():
 def corr_matrix():
     return df.corr().to_html()
 
-@app.route("/find", methods=['GET','POST'])
-def find():
-    id = request.form.get("id_select")
-    return redirect(f"/find/{id}")
+# @app.route("/find", methods=['GET','POST'])
+# def find():
+#     id = request.form.get("id_select")
+#     return redirect(f"/find/{id}")
 
-@app.route("/find/<id>")
-def find_id(id):
-    # res = next((item for item in data_json if item['id'] == id), None)
+# @app.route("/find/<id>")
+# def find_id(id):
+#     # res = next((item for item in data_json if item['id'] == id), None)
+#     return df[df['id'] == int(id)].to_json(orient='records')
+
+@app.route("/find", methods=['POST'])
+def find():
+    id = request.form['id_select']
     return df[df['id'] == int(id)].to_json(orient='records')
+
+# to run app directly when launching python file
+if __name__ == '__main__':
+    app.run()
