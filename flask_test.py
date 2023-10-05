@@ -14,7 +14,7 @@ pipeline = joblib.load('lr_model.joblib')
 df = pd.read_csv('data.csv')
 df.drop(columns="Unnamed: 32", inplace=True)
 data_json = df.to_json(orient='records')
-data_json = json.loads(data_json)
+# data_json = json.loads(data_json)
 id_list= list(df["id"])
 id_dict = dict(df["id"])
 
@@ -48,7 +48,7 @@ def show_raw_data() :
 
 @app.route("/describe")
 def describe_data():
-    return df.describe().to_json()
+    return jsonify(df.describe().to_json(orient="split"))
 
 @app.route('/correlation')
 def corr_matrix():
