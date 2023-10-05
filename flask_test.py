@@ -68,23 +68,39 @@ def corr_matrix():
 def list_id():
     return df['id'].to_json(orient='records')
 
-@app.route("/find", methods=['POST'])
+@app.route("/findID", methods=['POST'])
 def find():
-    id = request.form['id_select']
+    id = request.post
     return df[df['id'] == int(id)].to_json(orient='records')
-
-# @app.route("/findID", methods=['POST'])
-# def find():
-#     id = request.post
-#     return df[df['id'] == int(id)].to_json(orient='records')
 
 @app.route("/predict", methods=['POST'])
 def predict():
-    id = request.form['id_select']
-    el = df[df['id'] == int(id)][features]
+    # get id with flask method request
+    id = request.json['id_selected']
+    # isolate the row
+    el = df[df['id'] == id][features]
+    # predict
     prediction = pipeline.predict(el)
+    # diagnosis
     verdict = 'Cellule bégnine' if prediction == 'B' else 'Celulle malade'
-    return f"{verdict}"
+    # format to json
+    response = {'prediction': prediction.tolist(),'gauge': verdict}
+    return jsonify(response)
+
+# -------------------------------------------------------------------------------------
+# with HTML form
+# @app.route("/find", methods=['POST'])
+# def find():
+#     id = request.form['id_select']
+#     return df[df['id'] == int(id)].to_json(orient='records')
+
+# @app.route("/predict", methods=['POST'])
+# def predict():
+#     id = request.form['id_select']
+#     el = df[df['id'] == int(id)][features]
+#     prediction = pipeline.predict(el)
+#     verdict = 'Cellule bégnine' if prediction == 'B' else 'Celulle malade'
+#     return f"{verdict}"
 
 # to run app directly when launching python file
 if __name__ == '__main__':

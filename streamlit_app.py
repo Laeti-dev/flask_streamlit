@@ -12,7 +12,7 @@ def def_endpoint(endpoint,method="get",data=None):
         r = requests.get(f"http://127.0.0.1:5000/{endpoint}")
         return r
     else:
-        r = requests.post(f"http://127.0.0.1:5000/{endpoint}", data)
+        r = requests.post(f"http://127.0.0.1:5000/{endpoint}", json=data)
         return r
 
 # df = pd.read_csv('data.csv')
@@ -74,5 +74,10 @@ with tab_pred:
     option = st.selectbox(
     'Choisir l\'ID du patient',
     (id_list))
-
-    selected = def_endpoint("findID",data=option)
+# get the raw on the data without diagnosis
+    selected = data_nodiagnosis[data_nodiagnosis["id"] == int(option)]
+    st.dataframe(selected)
+    data = {"id_selected": int(option)}
+    r = requests.post('http://127.0.0.1:5000/predict', json=data)
+    resp = r.json()
+    st.write("Prédiciton :", resp["gauge"])
