@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 
 # instance flask app
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # Load trained pipeline
 pipeline = joblib.load('lr_model.joblib')
@@ -22,7 +23,7 @@ features = ['texture_mean', 'smoothness_mean', 'concave points_mean',
 
 @app.route('/')
 def get_data():
-    return jsonify(data.to_json(orient='records'))
+    return data.to_json(orient='records')
 
 @app.route('/ID_info', methods=['POST'])
 def get_data_ID_info():

@@ -20,8 +20,8 @@
       </ul>
     </div>
     <div>
-      <p>Or look for a data</p>
-      <form method="POST" action="{{ url_for('find') }}">
+      <p>Choose your patient ID and predict cell states</p>
+      <form method="POST" action="{{ url_for('predict') }}">
         <select name="id_select">
             <option value=" "> </option>
           {%for id in id_list%}
